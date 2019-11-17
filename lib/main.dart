@@ -60,7 +60,7 @@ class JumpingCurve extends Curve{
   }
 }
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  AnimationController dotController;
+  AnimationController myController;
   Animation<double> animation;
   Animation<Offset> offset1;
   Animation<Offset> offset2;
@@ -68,42 +68,42 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    dotController = AnimationController(
+    myController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
     );
     animation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(dotController);
+    ).animate(myController);
 
     offset1 = Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -0.5))
         .animate(CurvedAnimation(
-      parent: dotController,
+      parent: myController,
       curve:JumpingCurve(0.0,0.2),
     ));
 
     offset2 = Tween<Offset>(begin:Offset(0.0, 0.0), end: Offset(0.0, -0.5))
         .animate(CurvedAnimation(
-      parent: dotController,
+      parent: myController,
       curve:JumpingCurve(0.2,0.4),
     ));
 
     offset3 = Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -0.5))
         .animate(CurvedAnimation(
-      parent: dotController,
+      parent: myController,
       curve:JumpingCurve(0.4,0.6),
     ));
 
-    dotController.forward();
+    myController.forward();
 
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        dotController.repeat();
+        myController.repeat();
       }
     });
 
-    dotController.addListener(() {
+    myController.addListener(() {
       setState(() {});
     });
     super.initState();
