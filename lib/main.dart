@@ -62,9 +62,7 @@ class JumpingCurve extends Curve{
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   AnimationController myController;
   Animation<double> animation;
-  Animation<Offset> offset1;
-  Animation<Offset> offset2;
-  Animation<Offset> offset3;
+
 
   @override
   void initState() {
@@ -76,36 +74,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       begin: 0.0,
       end: 1.0,
     ).animate(myController);
+    myController.repeat();
 
-    offset1 = Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -0.5))
-        .animate(CurvedAnimation(
-      parent: myController,
-      curve:JumpingCurve(0.0,0.2),
-    ));
 
-    offset2 = Tween<Offset>(begin:Offset(0.0, 0.0), end: Offset(0.0, -0.5))
-        .animate(CurvedAnimation(
-      parent: myController,
-      curve:JumpingCurve(0.2,0.4),
-    ));
-
-    offset3 = Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -0.5))
-        .animate(CurvedAnimation(
-      parent: myController,
-      curve:JumpingCurve(0.4,0.6),
-    ));
-
-    myController.forward();
-
-    animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        myController.repeat();
-      }
-    });
-
-    myController.addListener(() {
-      setState(() {});
-    });
     super.initState();
 
 
@@ -132,13 +103,17 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               SlideTransition(
-                position:offset1,
+                position:Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -0.4))
+                    .animate(CurvedAnimation(
+                  parent: myController,
+                  curve:JumpingCurve(0.0,0.4),
+                )),
                 child: Container(
                   decoration: new BoxDecoration(
                     color: Colors.white,
                     border: new Border.all(
-                        color: Colors.blueGrey,
-                        width: 12.0,
+                      color: Colors.blueGrey,
+                      width: 12.0,
 
                     ),
                     shape: BoxShape.circle,
@@ -146,13 +121,17 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                 ),
               ),
               SlideTransition(
-                position:offset2,
+                position:Tween<Offset>(begin:Offset(0.0, 0.0), end: Offset(0.0, -0.4))
+                    .animate(CurvedAnimation(
+                  parent: myController,
+                  curve:JumpingCurve(0.2,0.6),
+                )),
                 child: Container(
                   decoration: new BoxDecoration(
                     color: Colors.white,
                     border: new Border.all(
-                        color: Colors.blueGrey,
-                        width: 12.0,
+                      color: Colors.blueGrey,
+                      width: 12.0,
 
                     ),
                     shape: BoxShape.circle,
@@ -160,13 +139,17 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                 ),
               ),
               SlideTransition(
-                position:offset3,
+                position:Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -0.4))
+                    .animate(CurvedAnimation(
+                  parent: myController,
+                  curve:JumpingCurve(0.4,0.8),
+                )),
                 child: Container(
                   decoration: new BoxDecoration(
                     color: Colors.white,
                     border: new Border.all(
-                        color: Colors.blueGrey,
-                        width: 12.0,
+                      color: Colors.blueGrey,
+                      width: 12.0,
 
                     ),
                     shape: BoxShape.circle,
@@ -181,23 +164,5 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       ),
 
     );
-  }
-}
-
-class JumpingCurve extends Curve{
-  double start;
-  double stop;
-  JumpingCurve(this.start,this.stop);
-  @override
-  double transformInternal(double t) {
-    if(t >= start && t<(start+stop)/2.0){
-      return (2*(t - start) / (stop-start)) ;
-
-    }
-    else if(t >= (start+stop)/2.0+0.2 && t<stop){
-      return (2*(stop - t) / (stop - start)) ;
-
-    }
-    else return 0;
   }
 }
